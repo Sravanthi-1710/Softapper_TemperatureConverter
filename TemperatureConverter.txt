@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+public class TemperatureConverter {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.println("Enter temperature value (or type 'exit' to quit): ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("exit")) break;
+                double temperature = Double.parseDouble(input);
+
+                System.out.println("Enter source scale (Celsius, Fahrenheit, Kelvin): ");
+                String sourceScale = scanner.nextLine().toLowerCase();
+
+                System.out.println("Enter target scale (Celsius, Fahrenheit, Kelvin): ");
+                String targetScale = scanner.nextLine().toLowerCase();
+
+                double convertedTemperature = convertTemperature(temperature, sourceScale, targetScale);
+
+                System.out.println("Converted Temperature: " + convertedTemperature + " " + targetScale);
+
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Invalid temperature value. Please enter a valid number.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static double convertTemperature(double temperature, String sourceScale, String targetScale) {
+        if (sourceScale.equals(targetScale)) {
+            return temperature;
+        }
+
+        double tempInCelsius;
+
+        switch (sourceScale) {
+            case "celsius":
+                tempInCelsius = temperature;
+                break;
+            case "fahrenheit":
+                tempInCelsius = (temperature - 32) * 5/9;
+                break;
+            case "kelvin":
+                tempInCelsius = temperature - 273.15;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid source scale. Please choose Celsius, Fahrenheit, or Kelvin.");
+        }
+
+        switch (targetScale) {
+            case "celsius":
+                return tempInCelsius;
+            case "fahrenheit":
+                return tempInCelsius * 9/5 + 32;
+            case "kelvin":
+                return tempInCelsius + 273.15;
+            default:
+                throw new IllegalArgumentException("Invalid target scale. Please choose Celsius, Fahrenheit, or Kelvin.");
+        }
+    }
+}
